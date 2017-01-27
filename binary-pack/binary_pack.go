@@ -3,19 +3,20 @@ package binary_pack
 import (
 	"strings"
 	"strconv"
+	"errors"
 )
 
 type BinaryPack struct {}
 
-func (bp *BinaryPack) Pack(format []string, args ...interface{}) []byte {
-	return []byte{}
+func (bp *BinaryPack) Pack(format []string, args ...interface{}) ([]byte, error) {
+	return []byte{}, nil
 }
 
-func (bp *BinaryPack) UnPack(format []string, msg []byte) []interface{} {
-	return make([]interface{}, 1)
+func (bp *BinaryPack) UnPack(format []string, msg []byte) ([]interface{}, error) {
+	return make([]interface{}, 1), nil
 }
 
-func (bp *BinaryPack) CalcSize(format []string) int {
+func (bp *BinaryPack) CalcSize(format []string) (int, error) {
 	var size int
 
 	for _, f := range format {
@@ -32,9 +33,11 @@ func (bp *BinaryPack) CalcSize(format []string) int {
 			if strings.Contains(f, "s") {
 				n, _ := strconv.Atoi(strings.TrimRight(f, "s"))
 				size = size + n
+			} else {
+				return 0, errors.New("Unexpected format token: '" + f + "'")
 			}
 		}
 	}
 
-	return size
+	return size, nil
 }
