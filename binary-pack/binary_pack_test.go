@@ -124,3 +124,28 @@ func TestBinaryPack_UnPack(t *testing.T) {
 		}
 	}
 }
+
+func TestBinaryPackPartialRead(t *testing.T) {
+	cases := []struct {
+		f []string
+		a []byte
+		i int // Position of expected value
+		want interface{}
+		e bool
+	}{
+		{[]string{"I", "I", "I"}, // []interface{}{1, 2, 4, "DUMP"} <- encoded collection has 4 values
+			[]byte{1, 0, 0, 0, 2, 0, 0, 0, 4, 0, 0, 0, 68, 85, 77, 80}, 2, 4, false},
+	}
+
+	for _, c := range cases {
+		got, err := new(BinaryPack).UnPack(c.f, c.a)
+
+		if err != nil && !c.e {
+			t.Errorf("UnPack(%v, %v) raised %v", c.f, c.a, err)
+		}
+
+		if err == nil && got[c.i] != c.want {
+			t.Errorf("UnPack(%v, %v) == %v want %v", c.f, c.a, got[c.i], c.want)
+		}
+	}
+}
