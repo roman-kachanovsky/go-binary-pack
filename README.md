@@ -20,7 +20,7 @@ values := []interface{}{4, true, 3.14, "Golang"}
 // Create BinaryPack object
 bp := new(BinaryPack)
 
-// Pack values to struct
+// Pack values to []byte
 data, err := bp.Pack(format, values)
 
 // Unpack binary data to []interface{}

@@ -150,7 +150,7 @@ func TestBinaryPackPartialRead(t *testing.T) {
 	}
 }
 
-func TestBinaryPackUsage(t *testing.T) {
+func TestBinaryPackUsageExample(t *testing.T) {
 	// Prepare format (slice of strings)
 	format := []string{"I", "?", "d", "6s"}
 
