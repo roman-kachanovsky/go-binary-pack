@@ -132,8 +132,8 @@ func bytesToBool(b []byte) bool {
 
 func intToBytes(n int, size int) []byte {
 	buf := bytes.NewBuffer([]byte{})
-	binary.Write(buf, binary.BigEndian, int64(n))
-	return buf.Bytes()[buf.Len()-size:]
+	binary.Write(buf, binary.LittleEndian, int64(n))
+	return buf.Bytes()[0:size]
 }
 
 func bytesToInt(b []byte) int {
@@ -142,45 +142,45 @@ func bytesToInt(b []byte) int {
 	switch len(b) {
 	case 1:
 		var x int8
-		binary.Read(buf, binary.BigEndian, &x)
+		binary.Read(buf, binary.LittleEndian, &x)
 		return int(x)
 	case 2:
 		var x int16
-		binary.Read(buf, binary.BigEndian, &x)
+		binary.Read(buf, binary.LittleEndian, &x)
 		return int(x)
 	case 4:
 		var x int32
-		binary.Read(buf, binary.BigEndian, &x)
+		binary.Read(buf, binary.LittleEndian, &x)
 		return int(x)
 	default:
 		var x int64
-		binary.Read(buf, binary.BigEndian, &x)
+		binary.Read(buf, binary.LittleEndian, &x)
 		return int(x)
 	}
 }
 
 func float32ToBytes(n float32, size int) []byte {
 	buf := bytes.NewBuffer([]byte{})
-	binary.Write(buf, binary.BigEndian, n)
-	return buf.Bytes()[buf.Len()-size:]
+	binary.Write(buf, binary.LittleEndian, n)
+	return buf.Bytes()[0:size]
 }
 
 func bytesToFloat32(b []byte) float32 {
 	var x float32
 	buf := bytes.NewBuffer(b)
-	binary.Read(buf, binary.BigEndian, &x)
+	binary.Read(buf, binary.LittleEndian, &x)
 	return x
 }
 
 func float64ToBytes(n float64, size int) []byte {
 	buf := bytes.NewBuffer([]byte{})
-	binary.Write(buf, binary.BigEndian, n)
-	return buf.Bytes()[buf.Len()-size:]
+	binary.Write(buf, binary.LittleEndian, n)
+	return buf.Bytes()[0:size]
 }
 
 func bytesToFloat64(b []byte) float64 {
 	var x float64
 	buf := bytes.NewBuffer(b)
-	binary.Read(buf, binary.BigEndian, &x)
+	binary.Read(buf, binary.LittleEndian, &x)
 	return x
 }
