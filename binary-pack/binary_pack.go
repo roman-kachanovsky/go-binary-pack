@@ -131,7 +131,7 @@ func bytesToBool(b []byte) bool {
 }
 
 func intToBytes(n int, size int) []byte {
-	buf := new(bytes.Buffer)
+	buf := bytes.NewBuffer([]byte{})
 	binary.Write(buf, binary.BigEndian, int64(n))
 	return buf.Bytes()[buf.Len()-size:]
 }
@@ -160,7 +160,7 @@ func bytesToInt(b []byte) int {
 }
 
 func float32ToBytes(n float32, size int) []byte {
-	buf := new(bytes.Buffer)
+	buf := bytes.NewBuffer([]byte{})
 	binary.Write(buf, binary.BigEndian, n)
 	return buf.Bytes()[buf.Len()-size:]
 }
