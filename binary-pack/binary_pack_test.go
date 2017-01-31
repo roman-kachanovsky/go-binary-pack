@@ -149,3 +149,31 @@ func TestBinaryPackPartialRead(t *testing.T) {
 		}
 	}
 }
+
+func TestBinaryPackUsage(t *testing.T) {
+	// Prepare format (slice of strings)
+	format := []string{"I", "?", "d", "6s"}
+
+	// Prepare values to pack
+	values := []interface{}{4, true, 3.14, "Golang"}
+
+	// Create BinaryPack object
+	bp := new(BinaryPack)
+
+	// Pack values to struct
+	data, _ := bp.Pack(format, values)
+
+	// Unpack binary data to []interface{}
+	unpacked_values, _ := bp.UnPack(format, data)
+
+	if !reflect.DeepEqual(unpacked_values, values) {
+		t.Errorf("Unpacked %v != original %v", unpacked_values, values)
+	}
+
+	// You can calculate size of expected binary data by format
+	size, _ := bp.CalcSize(format)
+
+	if size != len(data) {
+		t.Errorf("Size(%v) != %v", size, len(data))
+	}
+}
