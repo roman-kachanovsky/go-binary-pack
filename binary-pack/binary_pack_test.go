@@ -61,6 +61,14 @@ func TestBinaryPack_Pack(t *testing.T) {
 		{[]string{"I", "I", "I", "4s"}, []interface{}{1, 4, "DUMP"}, nil, true},
 		// Wrong format token
 		{[]string{"I", "a", "I", "4s"}, []interface{}{1, 2, 4, "DUMP"}, nil, true},
+		// Wrong types
+		{[]string{"?"}, []interface{}{1.0}, nil, true},
+		{[]string{"H"}, []interface{}{int8(1)}, nil, true},
+		{[]string{"I"}, []interface{}{int32(2)}, nil, true},
+		{[]string{"Q"}, []interface{}{int64(3)}, nil, true},
+		{[]string{"f"}, []interface{}{float64(2.5)}, nil, true},
+		{[]string{"d"}, []interface{}{float32(2.5)}, nil, true},
+		{[]string{"1s"}, []interface{}{'a'}, nil, true},
 	}
 
 	for _, c := range cases {

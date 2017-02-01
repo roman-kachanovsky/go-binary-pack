@@ -21,22 +21,50 @@ func (bp *BinaryPack) Pack(format []string, msg []interface{}) ([]byte, error) {
 	for i, f := range format {
 		switch f {
 		case "?":
-			res = append(res, boolToBytes(msg[i].(bool))...)
+			casted_value, ok := msg[i].(bool)
+			if !ok {
+				return nil, errors.New("Type of passed value doesn't match to expected '" + f + "' (bool)")
+			}
+			res = append(res, boolToBytes(casted_value)...)
 		case "h", "H":
-			res = append(res, intToBytes(msg[i].(int), 2)...)
+			casted_value, ok := msg[i].(int)
+			if !ok {
+				return nil, errors.New("Type of passed value doesn't match to expected '" + f + "' (int, 2 bytes)")
+			}
+			res = append(res, intToBytes(casted_value, 2)...)
 		case "i", "I", "l", "L":
-			res = append(res, intToBytes(msg[i].(int), 4)...)
+			casted_value, ok := msg[i].(int)
+			if !ok {
+				return nil, errors.New("Type of passed value doesn't match to expected '" + f + "' (int, 4 bytes)")
+			}
+			res = append(res, intToBytes(casted_value, 4)...)
 		case "q", "Q":
-			res = append(res, intToBytes(msg[i].(int), 8)...)
+			casted_value, ok := msg[i].(int)
+			if !ok {
+				return nil, errors.New("Type of passed value doesn't match to expected '" + f + "' (int, 8 bytes)")
+			}
+			res = append(res, intToBytes(casted_value, 8)...)
 		case "f":
-			res = append(res, float32ToBytes(msg[i].(float32), 4)...)
+			casted_value, ok := msg[i].(float32)
+			if !ok {
+				return nil, errors.New("Type of passed value doesn't match to expected '" + f + "' (float32)")
+			}
+			res = append(res, float32ToBytes(casted_value, 4)...)
 		case "d":
-			res = append(res, float64ToBytes(msg[i].(float64), 8)...)
+			casted_value, ok := msg[i].(float64)
+			if !ok {
+				return nil, errors.New("Type of passed value doesn't match to expected '" + f + "' (float64)")
+			}
+			res = append(res, float64ToBytes(casted_value, 8)...)
 		default:
 			if strings.Contains(f, "s") {
+				casted_value, ok := msg[i].(string)
+				if !ok {
+					return nil, errors.New("Type of passed value doesn't match to expected '" + f + "' (string)")
+				}
 				n, _ := strconv.Atoi(strings.TrimRight(f, "s"))
 				res = append(res, []byte(fmt.Sprintf("%s%s",
-					msg[i].(string), strings.Repeat("\x00", n - len(msg[i].(string)))))...)
+					casted_value, strings.Repeat("\x00", n - len(casted_value))))...)
 			} else {
 				return nil, errors.New("Unexpected format token: '" + f + "'")
 			}
