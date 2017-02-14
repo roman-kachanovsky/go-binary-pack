@@ -1,3 +1,23 @@
+// Copyright 2017 Roman Kachanovsky. All rights reserved.
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file.
+
+/*
+	Package binary_pack performs conversions between some Go values represented as byte slices.
+	This can be used in handling binary data stored in files or from network connections,
+	among other sources. It uses format slices of strings as compact descriptions of the layout
+	of the Go structs.
+
+	Format characters (some characters like H have been reserved for future implementation of unsigned numbers):
+		?				bool, packed size 1 byte
+		h, H			int, packed size 2 bytes (in future it will support pack/unpack of int8, uint8 values)
+		i, I, l, L		int, packed size 4 bytes (in future it will support pack/unpack of int16, uint16, int32, uint32 values)
+		q, Q			int, packed size 8 bytes (in future it will support pack/unpack of int64, uint64 values)
+		f 				float32, packed size 4 bytes
+		d				float64, packed size 8 bytes
+		Ns				string, packed size N bytes, N is a number of runes to pack/unpack
+
+ */
 package binary_pack
 
 import (
@@ -11,6 +31,8 @@ import (
 
 type BinaryPack struct {}
 
+// Return a byte slice containing the values of msg slice packed according to the given format.
+// The items of msg slice must match the values required by the format exactly.
 func (bp *BinaryPack) Pack(format []string, msg []interface{}) ([]byte, error) {
 	if len(format) > len(msg) {
 		return nil, errors.New("Format is longer than values to pack")
@@ -74,6 +96,10 @@ func (bp *BinaryPack) Pack(format []string, msg []interface{}) ([]byte, error) {
 	return res, nil
 }
 
+// Unpack the byte slice (presumably packed by Pack(format, msg)) according to the given format.
+// The result is a []interface{} slice even if it contains exactly one item.
+// The byte slice must contain not less the amount of data required by the format
+// (len(msg) must more or equal CalcSize(format)).
 func (bp *BinaryPack) UnPack(format []string, msg []byte) ([]interface{}, error) {
 	expected_size, err := bp.CalcSize(format)
 
@@ -121,6 +147,7 @@ func (bp *BinaryPack) UnPack(format []string, msg []byte) ([]interface{}, error)
 	return res, nil
 }
 
+// Return the size of the struct (and hence of the byte slice) corresponding to the given format.
 func (bp *BinaryPack) CalcSize(format []string) (int, error) {
 	var size int
 
