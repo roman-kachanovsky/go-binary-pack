@@ -9,13 +9,13 @@
 	of the Go structs.
 
 	Format characters (some characters like H have been reserved for future implementation of unsigned numbers):
-		?				bool, packed size 1 byte
-		h, H			int, packed size 2 bytes (in future it will support pack/unpack of int8, uint8 values)
-		i, I, l, L		int, packed size 4 bytes (in future it will support pack/unpack of int16, uint16, int32, uint32 values)
-		q, Q			int, packed size 8 bytes (in future it will support pack/unpack of int64, uint64 values)
-		f 				float32, packed size 4 bytes
-		d				float64, packed size 8 bytes
-		Ns				string, packed size N bytes, N is a number of runes to pack/unpack
+		? - bool, packed size 1 byte
+		h, H - int, packed size 2 bytes (in future it will support pack/unpack of int8, uint8 values)
+		i, I, l, L - int, packed size 4 bytes (in future it will support pack/unpack of int16, uint16, int32, uint32 values)
+		q, Q - int, packed size 8 bytes (in future it will support pack/unpack of int64, uint64 values)
+		f - float32, packed size 4 bytes
+		d - float64, packed size 8 bytes
+		Ns - string, packed size N bytes, N is a number of runes to pack/unpack
 
  */
 package binary_pack
